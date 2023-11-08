@@ -167,9 +167,11 @@ VALUES
     WHERE hero_id = 1;
 
 
-    /*List the player names and their corresponding hero names that are actively in
-	use during gameplay, excluding those with inactive heroes.*/
-    SELECT p.player_name, h.hero_name
-    FROM public.player p
-    INNER JOIN public.hero h ON p.hero_id = h.hero_id
-    WHERE h.is_active = true;
+    /*Retrieve the average player level for each class,
+	arranging them in descending order from the highest level to the lowest.*/
+    SELECT c.class_name, AVG(p.player_level) AS average_level
+    FROM public.class c
+    LEFT JOIN public.hero h ON c.class_id = h.class_id
+    LEFT JOIN public.player p ON h.hero_id = p.hero_id
+    GROUP BY c.class_name
+    ORDER BY average_level DESC;
